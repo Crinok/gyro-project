@@ -9,11 +9,11 @@ body {
 	background: #00bb72; font-family: helvetica, arial, sans serif;
 }
 #ball {
-	position: absolute;	
-	width: 40px;
-	height: 40px;
-	border-radius: 40px;
-	-webkit-radius: 40px;
+	position: absolute;
+	width: 20px;
+	height: 20px;
+	border-radius: 20px;
+	-webkit-radius: 20px;
 	background-color: #fff;
 }
 </style>
@@ -26,7 +26,7 @@ body {
 </div>
 <script type="text/javascript">
 
-var x = 0, y = 0,
+var x = document.documentElement.clientWidth / 2, y = document.documentElement.clientHeight / 2,
     vx = 0, vy = 0,
 	ax = 0, ay = 0;
 	
@@ -34,8 +34,8 @@ var ball = document.getElementById("ball");
 
 if (window.DeviceMotionEvent != undefined) {
 	window.ondevicemotion = function(e) {
-		ax = event.accelerationIncludingGravity.x * -5;
-		ay = event.accelerationIncludingGravity.y * -5;	
+		ax = event.accelerationIncludingGravity.x * 5;
+		ay = event.accelerationIncludingGravity.y * 5;
 	}
 
 	setInterval( function() {
