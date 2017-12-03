@@ -137,8 +137,8 @@ if (window.DeviceMotionEvent != undefined) {
 
     if(getDistance(ball.posX, ball.posY, pocket1.posX, pocket1.posY) < ball.radius + pocket1.radius){
       div1.style.display = "block";
-        x = x;
-        y = y;
+        x = pocket1.posX;
+        y = pocket1.posY;
         vx = -vx / bounciness;
         vy = -vy / bounciness;
         ball.radius = 0;
@@ -149,8 +149,8 @@ if (window.DeviceMotionEvent != undefined) {
 
     if(getDistance(ball.posX, ball.posY, pocket2.posX, pocket2.posY) < ball.radius + pocket2.radius){
       div2.style.display = "block";
-      x = x;
-      y = y;
+      x = pocket2.posX;
+      y = pocket2.posY;
       vx = -vx / bounciness;
       vy = -vy / bounciness;
       ball.radius = 0;
@@ -161,8 +161,8 @@ if (window.DeviceMotionEvent != undefined) {
 
     if(getDistance(ball.posX, ball.posY, pocket3.posX, pocket3.posY) < ball.radius + pocket3.radius){
       div3.style.display = "block";
-      x = x;
-      y = y;
+      x = pocket3.posX;
+      y = pocket3.posY;
       vx = -vx / bounciness;
       vy = -vy / bounciness;
       ball.radius = 0;
@@ -173,11 +173,11 @@ if (window.DeviceMotionEvent != undefined) {
 
     if(getDistance(ball.posX, ball.posY, pocket4.posX, pocket4.posY) < ball.radius + pocket4.radius){
       div4.style.display = "block";
-      x = x;
-      y = y;
-      vx = -vx / bounciness;
-      vy = -vy / bounciness;
-      ball.radius = 0;
+        x = pocket4.posX;
+        y = pocket4.posY;
+        vx = -vx / bounciness;
+        vy = -vy / bounciness;
+        ball.radius = 0;
     }
     else if(getDistance(ball.posX, ball.posY, pocket4.posX, pocket4.posY) > ball.radius + pocket4.radius){
       // div4.style.display = "none";
