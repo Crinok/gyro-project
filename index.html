@@ -103,15 +103,23 @@ var content = document.getElementById("content");
 var context = canvas.getContext("2d");
 var radius = 150;
 
-var ball, ball2, hole1, hole2, hole3, hole4, border, innerCircle, outsideCircle;
+var ball, ball1, hole1, hole2, hole3, hole4, border, innerCircle, outsideCircle;
 var pocket1, pocket2, pocket3, pocket4;
 var ballBorder = [];
+var xMax = [];
+var yMax = [];
+var result;
 
+function readMouseMove(e){
+  //result = limit(e.x, e.y);
+  // ball1 = new Circle(result.x, result.y, 10, "white");
+}
 
 if (window.DeviceMotionEvent != undefined) {
   window.ondevicemotion = function(e) {
     ax = event.accelerationIncludingGravity.x * - acceleration;
     ay = event.accelerationIncludingGravity.y * - acceleration;
+
   }
   
   setInterval( function() {
@@ -126,14 +134,15 @@ if (window.DeviceMotionEvent != undefined) {
 
     vx = vx * gravity;
     vy = vy * gravity;
-    y = parseInt(y + vy / 50);
     x = parseInt(x + vx / 50);
+    y = parseInt(y + vy / 50);
 
+    
+    
     boundingBoxCheck();
     init();
-
-
-    // console.log(pocket0.radius + pocket1.radius);
+    result = limit(x, y);
+    ball = new Circle(result.x, result.y, 10, "white");
 
     if(getDistance(ball.posX, ball.posY, pocket1.posX, pocket1.posY) < ball.radius + pocket1.radius){
       div1.style.display = "block";
@@ -141,10 +150,8 @@ if (window.DeviceMotionEvent != undefined) {
         y = pocket1.posY;
         vx = -vx / bounciness;
         vy = -vy / bounciness;
-        // ball.radius = 0;
     }
     else if(getDistance(ball.posX, ball.posY, pocket1.posX, pocket1.posY) > ball.radius + pocket1.radius){
-      // div1.style.display = "none";
     }
 
     if(getDistance(ball.posX, ball.posY, pocket2.posX, pocket2.posY) < ball.radius + pocket2.radius){
@@ -153,10 +160,8 @@ if (window.DeviceMotionEvent != undefined) {
       y = pocket2.posY;
       vx = -vx / bounciness;
       vy = -vy / bounciness;
-      // ball.radius = 0;
     }
     else if(getDistance(ball.posX, ball.posY, pocket2.posX, pocket2.posY) > ball.radius + pocket2.radius){
-      // div2.style.display = "none";
     }
 
     if(getDistance(ball.posX, ball.posY, pocket3.posX, pocket3.posY) < ball.radius + pocket3.radius){
@@ -165,10 +170,8 @@ if (window.DeviceMotionEvent != undefined) {
       y = pocket3.posY;
       vx = -vx / bounciness;
       vy = -vy / bounciness;
-      // ball.radius = 0;
     }
     else if(getDistance(ball.posX, ball.posY, pocket3.posX, pocket3.posY) > ball.radius + pocket3.radius){
-      // div3.style.display = "none";
     }
 
     if(getDistance(ball.posX, ball.posY, pocket4.posX, pocket4.posY) < ball.radius + pocket4.radius){
@@ -177,44 +180,33 @@ if (window.DeviceMotionEvent != undefined) {
         y = pocket4.posY;
         vx = -vx / bounciness;
         vy = -vy / bounciness;
-        // ball.radius = 0;
     }
     else if(getDistance(ball.posX, ball.posY, pocket4.posX, pocket4.posY) > ball.radius + pocket4.radius){
-      // div4.style.display = "none";
     }
     
     drawBorder();
-    // pocket0.update();
     innerCircle.update();
     pocket1.update();
     pocket2.update();
     pocket3.update();
     pocket4.update();
 
-    // hole1.update();
-    // hole2.update();
-    // hole3.update();
-    // hole4.update();
     ball.update();
-    
+    // ball1.update();
 
   }, frameRate);
 } 
 
+
+
 function init(){
   context.clearRect(0, 0, canvas.width, canvas.height);
-
-  ball = new Circle(x, y, 10, "white");
+  
   innerCircle = new Circle(centerPivotX, centerPivotY, 130, "#139935");
-  // hole1 = new Circle(centerPivotX, 20, 20, '#180c04');
-  // hole2 = new Circle(canvas.width - 20, centerPivotY, 20, '#180c04');
-  // hole3 = new Circle(centerPivotX, canvas.height - 20, 20, '#180c04');
-  // hole4 = new Circle(20, centerPivotY, 20, '#180c04');  
-  // pocket0 = new drawPoint(-5,1);
-  pocket1 = new drawPoint(0,1);
-  pocket2 = new drawPoint(90,1);
-  pocket3 = new drawPoint(180,1);
-  pocket4 = new drawPoint(270,1);
+  pocket1 = new drawPoint(1, 0);
+  pocket2 = new drawPoint(1, 90);
+  pocket3 = new drawPoint(1, 180);
+  pocket4 = new drawPoint(1, 270);
 }
 
 function getDistance(x1, y1, x2, y2){
@@ -222,6 +214,32 @@ function getDistance(x1, y1, x2, y2){
   var yDistance = y2 - y1;
 
   return Math.sqrt(Math.pow(xDistance, 2) + Math.pow(yDistance, 2));
+}
+
+canvas.center = [centerPivotX, centerPivotY];
+
+function limit(x, y) {
+  var dist = distance([x, y], canvas.center);
+  if (dist <= radius) {
+      return {x: x, y: y};
+  } 
+  else {
+      x = x - centerPivotX;
+      y = y - centerPivotY;
+      var radians = Math.atan2(y, x)
+  return {
+     x: Math.cos(radians) * radius + centerPivotX,
+     y: Math.sin(radians) * radius + centerPivotY
+  }
+    } 
+}
+
+function distance(dot1, dot2) {
+    var x1 = dot1[0],
+        y1 = dot1[1],
+        x2 = dot2[0],
+        y2 = dot2[1];
+    return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
 }
 
 function Circle(posX, posY, radius, color){
@@ -255,23 +273,13 @@ function drawBorder(){
     context.stroke();
 }
 
-// function drawPoint(angle, distanceFromCenter){
-//     var x = centerPivotX + radius * Math.cos(-angle*Math.PI/180) * distanceFromCenter;
-//  var y = centerPivotY + radius * Math.sin(-angle*Math.PI/180) * distanceFromCenter;
-//     this.posX = x;
-//     this.posY = y;
-//  this.radius = radius;
-//  context.beginPath();
-//     context.arc(x, y, 25, 0, 2 * Math.PI);
-//     context.fill();
-// }
-
-function drawPoint(angle, distanceFromCenter){
+function drawPoint(distanceFromCenter, angle){
   var x = centerPivotX + radius * Math.cos(-angle*Math.PI/180) * distanceFromCenter;
   var y = centerPivotY + radius * Math.sin(-angle*Math.PI/180) * distanceFromCenter;
   this.posX = x;
   this.posY = y;
   this.radius = 20;
+
   this.update = function(){
     this.draw();
   };
@@ -308,6 +316,9 @@ function boundingBoxCheck(){
   
 }
 
+
+
+document.onmousemove = readMouseMove;
 window.onload = init;
 
 </script>
